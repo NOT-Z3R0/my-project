@@ -1,0 +1,177 @@
+🛡️ OWASP Juice Shop Pentest Report
+
+
+Full-Spectrum Web Application Exploitation
+
+
+📌 Project Summary
+
+    This project demonstrates my ability to perform a real-world, end-to-end web application penetration test by exploiting OWASP Juice Shop, intentionally vulnerable for learning and skill demonstration.
+    I used both manual and semi-automated methods to identify, exploit, and chain critical vulnerabilities simulating a real black-box pentest scenario.
+
+🎯 Objectives
+
+✅ Perform reconnaissance
+✅ Identify all critical OWASP Top 10 vulnerabilities
+✅ Exploit vulnerabilities using manual payload crafting and Burp Suite
+✅ Understand attacker mindset and logic abuse
+✅ Document findings professionally
+
+
+🔍 Tools & Environment
+
+    Burp Suite Community Edition
+
+    Browser DevTools
+
+    TryHackMe OWASP Juice Shop Instance
+
+    Google OSINT
+
+    jwt.io (JWT decode and tampering tests)
+
+
+🚀 Exploitation Walkthrough
+Below is a detailed breakdown of the vulnerabilities exploited:
+
+1. Reconnaissance
+
+✅ Finding Exposed Emails:
+Browsed product reviews and discovered user email addresses, exposing sensitive PII that can aid in targeted attacks.
+
+✅ Parameter Reflection Discovery:
+Tested the search functionality, observed user input reflecting in the URL – potential for reflected XSS.
+
+2. SQL Injection
+
+✅ Login Bypass via SQLi:
+
+    Target: Login page
+
+    Payload used: ' OR 1=1--
+
+    Method: Intercepted login request with Burp Suite, injected payload into email field to bypass authentication without valid credentials.
+
+3. Broken Authentication
+
+✅ Brute-Force Attack:
+
+    Target: Admin account
+
+    Method: Sent password reset request to Burp Intruder, used payload list to brute-force passwords and gain access.
+
+✅ OSINT-based Password Reset:
+
+    Target: User ‘Jim’
+
+    Method: Searched user’s info on Google to answer security question, reset password successfully.
+
+4. Sensitive Data Exposure
+
+✅ Hidden FTP Directory Discovery:
+
+    Observed legal.md file in URL path /ftp/legal.md. Modified URL to /ftp and discovered hidden files containing critical credentials.
+
+✅ Poison Null Byte Exploit:
+
+    Encoded .bak backup file as %2500.md to bypass file extension restrictions and download it.
+
+✅ Credentials Leakage:
+
+    Found exposed credentials in backup and hidden files enabling unauthorized access.
+
+5. Broken Access Control
+
+✅ Accessing Admin Page:
+
+    Reviewed JS files in browser DevTools, discovered /administration path, accessed with admin credentials.
+
+✅ IDOR (Insecure Direct Object Reference):
+
+    Changed basket ID in intercepted request from 1 to 2, gained access to another user’s shopping basket.
+
+✅ Privilege Abuse:
+
+    Used admin panel to remove all 5-star reviews, demonstrating full admin privilege exploitation.
+
+6. Cross-Site Scripting (XSS)
+
+✅ DOM XSS:
+
+    Payload: <iframe src="javascript:alert('XSS')">
+
+    Injected via search input, triggered JavaScript popup.
+
+✅ Persistent XSS:
+
+    Target: Login history IP field
+
+    Method: Intercepted logout request in Burp, injected payload to persist. XSS triggered on next login.
+
+✅ Reflected XSS:
+
+    Target: Track Order URL
+
+    Payload: <iframe src="javascript:alert('XSS')">
+
+    Modified id parameter in URL, successfully executed.
+
+7. API Abuse (Header Injection)
+
+✅ True-Client-IP Header Injection:
+
+    Added custom header with XSS payload, which was reflected on subsequent login, demonstrating header-based injection attack surface.
+
+8. Business Logic Exploration
+
+✅ Negative Price & Coupon Stacking:
+
+    Tested basic negative pricing logic but further chaining with coupon stacking pending deeper exploitation in future testing.
+
+
+
+🔥 Critical Vulnerability Impacts
+
+SQL Injection	          🔴 Critical	 : Full authentication bypass → Account takeover
+
+Broken Authentication	  🔴 Critical  : 	Admin takeover via brute force / OSINT
+
+Sensitive Data Exposure	🔴 Critical	  : Credentials and backups leaked → compromise
+
+Broken Access Control	  🔴 Critical	  : Unauthorized admin access, privilege escalation
+
+XSS (All Types)	        🔴 Critical	  : Session hijacking, phishing, UI defacement
+
+IDOR	                  🔴 Critical	  : Access to other users’ private data
+
+API Abuse	              🟠 High	      : Header-based injection → XSS or privilege manipulation
+
+
+🛠️ Manual vs Automated Testing Used
+
+   Method	                               Approach
+Manual	        : Recon, parameter testing, logic abuse, XSS payload crafting, IDOR tests
+Semi-Automated	: Burp Intruder for password brute force, Repeater for request modification
+
+
+💡 Key Skills Demonstrated
+
+    Manual web application recon and exploitation
+
+    Burp Suite mastery (intruder, repeater, intercept)
+
+    OSINT integration into attacks
+
+    Understanding of authentication and authorization bypasses
+
+    XSS payload crafting across DOM, reflected, and persistent vectors
+
+    IDOR identification and exploitation
+
+    API abuse techniques via header manipulation
+
+    Business logic abuse testing methodology
+
+    Professional documentation and report writing
+
+
