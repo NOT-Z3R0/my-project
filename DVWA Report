@@ -1,0 +1,104 @@
+🛡️ Pentest Report: DVWA
+
+Date: 15-06-2025
+Author: Makwana Ansh
+Target IP: 192.168.56.104
+DVWA Security Level: Low
+
+
+1. 🎯 Objective:-
+To identify and exploit common web vulnerabilities in DVWA including SQL Injection, Command Injection, XSS, and CSRF.
+
+2. 🛠 Tools Used:-
+
+    Browser + DVWA interface
+
+    Kali Linux Terminal
+
+    Burp Suite (optional)
+
+    Sqlmap (for automation)
+
+    Nmap (optional)
+
+
+3. 💣 Exploitation Summary:-
+
+🧨 Vulnerability 1: SQL Injection:-
+
+    URL: /vulnerabilities/sqli/
+
+    Payload:
+
+    1' OR '1'='1
+
+    Result: Bypassed logic; dumped all users
+
+    Proof: Screenshot shows user list returned
+
+    Severity: High
+
+    Fix: Use parameterized queries (prepared statements)
+
+
+🧨 Vulnerability 2: Command Injection:-
+
+    URL: /vulnerabilities/exec/
+
+    Payloads Tried:
+
+    127.0.0.1; uname -a  
+    127.0.0.1; whoami
+
+    Result: Commands executed on server
+
+    Proof: Output displayed in browser
+
+    Severity: High
+
+    Fix: Use strict input validation & sanitization; avoid shell calls in code
+
+
+🧨 Vulnerability 3: XSS (Reflected):-
+
+    URL: /vulnerabilities/xss_r/
+
+    Payload:
+
+    <script>alert('XSS')</script>
+
+    Result: JavaScript executed in browser
+
+    Proof: Alert popup shown
+
+    Severity: Medium
+
+    Fix: Sanitize and encode output (HTML entities)
+
+
+🧨 Vulnerability 4: CSRF (Cross-Site Request Forgery):-
+
+    URL: /vulnerabilities/csrf/
+
+    Method: Captured and replayed POST request to change password
+
+    Result: Password changed without user interaction
+
+    Proof: Demonstrated attack via HTML form
+
+    Severity: Medium
+
+    Fix: Implement CSRF tokens in all state-changing forms
+
+
+4. 🛡 Recommendations Summary:-
+
+Vulnerability	                        Fix
+
+SQL Injection	        Prepared statements, whitelist filtering
+
+Command Injection	    Validate inputs, avoid direct system calls
+
+XSS	                  Encode output, strip script tags
+
+CSRF	                CSRF tokens, SameSite cookies.
